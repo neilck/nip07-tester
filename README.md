@@ -1,6 +1,6 @@
-# NIP07 Signing Extension Tester
+# NIP-07 Signing Extension Tester
 
-This web app tests NIP07 signing extensions.
+This web app tests NIP-07 signing extensions.
 
 - Shows which functions are supported by current extension in the browser
 - Shows result of calling individual functions
