@@ -1,4 +1,4 @@
-# NIP07 Signing Extension Tester
+# NIP-07 Signing Extension Tester
 
 This web app tests NIP-07 signing extensions.
 
