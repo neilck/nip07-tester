@@ -1,7 +1,13 @@
 // LoginContext.tsx
 "use client";
 
-import React, { createContext, useEffect, useReducer, useContext } from "react";
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  useReducer,
+  useContext,
+} from "react";
 import { reducer, initialState } from "./reducer";
 import { ContextProps } from "./contextTypes";
 import { ActionType } from "./actionTypes";
@@ -13,13 +19,34 @@ export const LoginProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [isAvailable, setIsAvailable] = useState(false);
+
+  const login = async () => {
+    const pubkey = await window.nostr.getPublicKey();
+    if (pubkey) {
+      dispatch({ type: ActionType.SET_CURRENT, payload: { pubkey } });
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const signOut = () => {
+    dispatch({ type: ActionType.SET_CURRENT, payload: null });
+  };
+
+  const setAccounts = (accounts: Account[]) => {
+    dispatch({ type: ActionType.SET_ACCOUNTS, payload: accounts });
+  };
+
   const onAccountChanged = async () => {
     const pubkey = await window.nostr?.getPublicKey();
     dispatch({ type: ActionType.SET_CURRENT, payload: { pubkey } as Account });
-    console.log("onAccountChanged");
   };
 
   useEffect(() => {
+    // Check if nostr extension available
+    setIsAvailable(window.nostr != undefined);
     // Check if "accountChanged" event is supported by window.nostr
     const hasAccountChanged =
       window.nostr && typeof window.nostr.on === "function";
@@ -43,14 +70,16 @@ export const LoginProvider: React.FC<{ children: React.ReactNode }> = ({
         console.error("Error adding 'accountChanged' listener:", error);
       }
     } else {
-      console.warn(
+      console.log(
         "accountChanged event listener not supported on window.nostr"
       );
     }
   }, []);
 
   return (
-    <LoginContext.Provider value={{ state, dispatch }}>
+    <LoginContext.Provider
+      value={{ state, isAvailable, login, signOut, setAccounts }}
+    >
       {children}
     </LoginContext.Provider>
   );

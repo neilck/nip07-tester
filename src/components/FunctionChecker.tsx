@@ -41,6 +41,10 @@ const FunctionChecker: React.FC<FunctionCheckerProps> = ({
     setParameters(newParameters);
   };
 
+  const clearClickHandler = () => {
+    setResult(null);
+  };
+
   return (
     <div className="p-4 flex flex-col">
       <div className="flex flex-row justify-between items-center w-full gap-3">
@@ -74,9 +78,21 @@ const FunctionChecker: React.FC<FunctionCheckerProps> = ({
       </div>
       {result && (
         <div className="bg-gray-100 border rounded p-2 mt-2">
-          <pre className="break-words whitespace-pre-wrap">
-            {JSON.stringify(result, null, 2)}
-          </pre>
+          <div className="w-full flex items-start">
+            <div className="flex-grow flex items-center min-h-[40px]">
+              <pre className="break-words whitespace-pre-wrap">
+                {JSON.stringify(result, null, 2)}
+              </pre>
+            </div>
+            <div className="w-[40px] h-[40px] bg-background p-1 border-2 flex items-center justify-center">
+              <button
+                className="text-lg font-bold text-center w-full"
+                onClick={clearClickHandler}
+              >
+                X
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

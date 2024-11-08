@@ -2,12 +2,14 @@ import React from "react";
 import { Account } from "@/types/common";
 
 type AuthButtonProps = {
+  disabled: boolean;
   account: Account | null;
   onLogIn: () => Promise<void>;
   onSignOut: () => void;
 };
 
 const AuthButton: React.FC<AuthButtonProps> = ({
+  disabled,
   account,
   onLogIn,
   onSignOut,
@@ -23,7 +25,10 @@ const AuthButton: React.FC<AuthButtonProps> = ({
         </button>
       ) : (
         <button
-          className="px-4 py-2 bg-blue-500 text-white rounded"
+          className={`px-4 py-2 rounded text-white ${
+            disabled ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500"
+          }`}
+          disabled={disabled}
           onClick={onLogIn}
         >
           Log In

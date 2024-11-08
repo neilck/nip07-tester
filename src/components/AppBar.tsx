@@ -3,21 +3,16 @@
 
 import React from "react";
 import { useLoginContext } from "@/context/LoginContext";
-import { ActionType } from "@/context/actionTypes";
-
 import AuthButton from "./AuthButton";
 
 const AppBar: React.FC = () => {
-  const { state, dispatch } = useLoginContext();
+  const { state, isAvailable, login, signOut } = useLoginContext();
 
   const handleLogIn = async () => {
     try {
-      const publicKey = await window.nostr.getPublicKey();
-      if (publicKey) {
-        dispatch({
-          type: ActionType.SET_CURRENT,
-          payload: { pubkey: publicKey },
-        });
+      const result = await login();
+      if (!result) {
+        console.error("Extension refused to return public key.");
       }
     } catch (error) {
       console.error("Failed to get public key:", error);
@@ -25,46 +20,39 @@ const AppBar: React.FC = () => {
   };
 
   const handleSignOut = () => {
-    dispatch({ type: ActionType.SET_CURRENT, payload: null });
+    signOut();
   };
 
   return (
     <div className="border-2 p-2">
       <div className="flex flex-row gap-8">
-        <div>
+        <div className="w-[280px]">
           <h3>Current Account</h3>
           {state.current ? (
-            <div className="max-w-[280px]">
-              <pre className="break-words whitespace-pre-wrap text-sm">
-                {state.current.pubkey}
-              </pre>
-            </div>
+            <pre className="break-words whitespace-pre-wrap text-sm">
+              {state.current.pubkey}
+            </pre>
           ) : (
             <p>No current account.</p>
           )}
         </div>
-        <div>
-          <h3>All Accounts</h3>
-          {state.accounts.length > 0 ? (
-            <ul>
-              {state.accounts.map((account, index) => (
-                <li key={index}>Pubkey: {account.pubkey}</li>
-              ))}
-            </ul>
-          ) : (
-            <p>No accounts available.</p>
-          )}
-        </div>
+
         <AuthButton
+          disabled={!isAvailable}
           account={state.current}
           onLogIn={handleLogIn}
           onSignOut={handleSignOut}
         />
-      </div>
-      <div className="text-sm mt-1">
-        {state.hasAccountChanged
-          ? "listening for accountChanged"
-          : "accountChanged event not supported by extension"}
+        <div className="flex flex-col">
+          <div className="text-sm mt-1">
+            {isAvailable ? "extension found" : "extension not found"}
+          </div>
+          <div className="text-sm mt-1">
+            {state.hasAccountChanged
+              ? "listening for accountChanged"
+              : "accountChanged event not supported by extension"}
+          </div>
+        </div>
       </div>
     </div>
   );

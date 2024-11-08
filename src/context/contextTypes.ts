@@ -1,5 +1,4 @@
 // contextTypes.ts
-import { Action } from "./actionTypes";
 import { Account } from "@/types/common";
 
 export interface State {
@@ -10,7 +9,10 @@ export interface State {
 
 export interface ContextProps {
   state: State;
-  dispatch: React.Dispatch<Action>;
+  isAvailable: boolean;
+  login: () => Promise<boolean>;
+  signOut: () => void;
+  setAccounts: (accounts: Account[]) => void;
 }
 
 export function getEmptyState() {
