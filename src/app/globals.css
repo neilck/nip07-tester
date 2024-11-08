@@ -19,3 +19,19 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+main {
+  @apply p-8;
+}
+
+h1 {
+  @apply text-2xl font-bold; 
+}
+
+h2 {
+  @apply text-xl font-bold; 
+}
+
+h3 {
+  @apply font-semibold; 
+}
