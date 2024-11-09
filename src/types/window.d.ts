@@ -7,7 +7,6 @@ declare global {
       getPublicKey: () => Promise<string | null>;
       getSharedPublicKeys: () => Promise<any>;
       signEvent: (event: any) => Promise<any>;
-      signEventWithPubkey: (pubkey: string, event: any) => Promise<any>;
       getRelays: () => Promise<any>;
       nip04: {
         encrypt: (peer: string, plaintext: string) => Promise<any>;

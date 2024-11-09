@@ -23,7 +23,7 @@ const NostrFunctionsDisplay: React.FC = () => {
       {nostr && (
         <div>
           <div className="w-full  border-4 mt-4">
-            <h2 className="pl-4 pt-2">NIP07</h2>
+            <h2 className="pl-4 pt-2">NIP-07</h2>
             <FunctionChecker
               fn={window.nostr?.getPublicKey}
               functionName="getPublicKey"
@@ -69,12 +69,6 @@ const NostrFunctionsDisplay: React.FC = () => {
               fn={window.nostr?.getSharedPublicKeys}
               functionName="getSharedPublicKeys"
               parameterCount={0}
-            />
-
-            <FunctionChecker
-              fn={window.nostr?.signEventWithPubkey}
-              functionName="signEventWithPubkey"
-              parameterCount={2}
             />
           </div>
         </div>

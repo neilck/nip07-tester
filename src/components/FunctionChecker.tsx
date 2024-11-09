@@ -27,7 +27,16 @@ const FunctionChecker: React.FC<FunctionCheckerProps> = ({
         }
 
         const boundFn = fn.bind(window.nostr);
-        const res = await boundFn(...parameters);
+
+        let param1 = parameters[0];
+        const param2 = parameters[1];
+
+        switch (functionName) {
+          case "signEvent":
+            param1 = JSON.parse(param1);
+        }
+
+        const res = await boundFn(param1, param2);
         setResult(res);
       } catch (error) {
         setResult(`Error: ${error}`);
@@ -51,17 +60,35 @@ const FunctionChecker: React.FC<FunctionCheckerProps> = ({
         <h3 className="flex-none w-[180px]">{functionName}</h3>
 
         <div className="flex gap-2 w-full">
-          {Array.from({ length: parameterCount }).map((_, index) => (
-            <input
-              key={index}
-              type="text"
-              className="px-2 py-1 border border-gray-300 rounded flex-grow w-full"
-              disabled={!fn}
-              placeholder={`Param ${index + 1}`}
-              value={parameters[index]}
-              onChange={(e) => handleParameterChange(index, e.target.value)}
-            />
-          ))}
+          {Array.from({ length: parameterCount }).map((_, index) => {
+            let placeholder = `Param ${index + 1}`;
+
+            switch (functionName) {
+              case "signEvent":
+                placeholder = "event";
+                break;
+              case "nip04.encrypt":
+              case "nip44.encrypt":
+                placeholder = index == 0 ? "peer" : "plaintext";
+                break;
+              case "nip04.decrypt":
+              case "nip44.decrypt":
+                placeholder = index == 0 ? "peer" : "ciphertext";
+                break;
+            }
+
+            return (
+              <input
+                key={index}
+                type="text"
+                className="px-2 py-1 border border-gray-300 rounded flex-grow w-full"
+                disabled={!fn}
+                placeholder={placeholder}
+                value={parameters[index]}
+                onChange={(e) => handleParameterChange(index, e.target.value)}
+              />
+            );
+          })}
         </div>
 
         <button

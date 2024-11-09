@@ -1,12 +1,12 @@
 # NIP07 Signing Extension Tester
 
-This web app tests NIP07 signing extensions.
+This web app tests NIP-07 signing extensions.
 
 - Shows which functions are supported by current extension in the browser
 - Shows result of calling individual functions
 - Demonstrates a sample Login / Sign Out for React Nostr clients
 
-<img src="./screenshot.png" alt="Screenshot of NIP07 Signing Extension Tester" width="70%" />
+<img src="./screenshot.png" alt="Screenshot of NIP-07 Signing Extension Tester" width="70%" />
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 

@@ -15,8 +15,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "NIP07 Tester",
-  description: "Test NIP07 Extension Functionality",
+  title: "NIP-07 Tester",
+  description: "Test NIP-07 Extension Functionality",
 };
 
 export default function RootLayout({
